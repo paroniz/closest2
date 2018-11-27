@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="css/closest.css"/>
+<script
+    src="https://code.jquery.com/jquery-3.3.1.js"
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"
+    src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.js"></script>
+<title>Closest</title>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" charset="utf-8">
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcrmY563_7uvm3uVq4WxdGapKuDq4G4ro&libraries=places"></script>
+<style>
+    #map {
+        height: 100%;
+    }
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+<script>
+    google.maps.event.addDomListener(window, 'load', initialise);
+    var id = window.location.search.substr(1);
+    var map;
+    var latlng;
+    var myOptions;
+    function initialise() {
+
+        myOptions = {
+            zoom: 3,          
+            mapTypeId: google.maps.MapTypeId.TERRAIN,
+            disableDefaultUI: true
+        }
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        doGeolocation();
+       
+      }
+      
+      function doGeolocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.watchPosition(positionSuccess, positionError);
+        } else {
+          positionError(-1);
+        }
+      }
+      
+      function positionError(err) {
+        var msg;
+        switch(err.code) {
+          case err.UNKNOWN_ERROR:
+            msg = "Unable to find your location";
+            break;
+          case err.PERMISSION_DENINED:
+            msg = "Permission denied in finding your location";
+            break;
+          case err.POSITION_UNAVAILABLE:
+            msg = "Your location is currently unknown";
+            break;
+          case err.BREAK:
+            msg = "Attempt to find location took too long";
+            break;
+          default:
+            msg = "Location detection not supported in browser";
+        }
+        document.getElementById('info').innerHTML = msg;
+      }
+
+      function positionSuccess(position) {
+        var coords = position.coords || position.coordinate || position;
+        var latLng = new google.maps.LatLng(coords.latitude, coords.longitude);
+        map.setCenter(latLng);
+        map.setZoom(12);
+        var service = new google.maps.places.PlacesService(map);
+        service.nearbySearch({
+          location: latLng,
+          radius: 2200,
+          type: [id]
+        }, callback);
+      }
+
+      function callback(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+          }
+        }
+      }
+      
+      var infowindow = new google.maps.InfoWindow();
+
+      function createMarker(place) {
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+        marker.addListener('click', function() {
+          map.setZoom(18);
+          map.setCenter(marker.getPosition());
+          infowindow.setContent(place.name +"<br>Rating:" +place.rating);
+          infowindow.open(map, marker);
+          
+        });
+
+        // google.maps.event.addListener(marker, 'click', function() {
+        //   infowindow.setContent(place.name, place.formatted_address);
+        //   infowindow.open(map, this);
+        //   map.setZoom(15);
+        //   map.setCenter(marker.getPosition());
+        // });
+    }
+  
+    function back() {
+      window.location.href='index.html';
+    }
+
+</script>
+</head>
+<body>
+<button onclick="back()">Back</button>
+<div id="map style="width: 500px; height: 500px;></div>
+<div id="map_canvas" style="width: 100%; height: 90%; margin-left: auto; margin-right: auto;"></div>
+</body>
+</html>

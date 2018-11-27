@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<head>
+<script
+	src="https://code.jquery.com/jquery-3.3.1.js"
+	integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.js"></script>
+<link rel="stylesheet" href="css/closest.css"/>
+<meta name="description" content="Find services close to you!">
+<title>Closest</title>
+<script type = "text/javascript"> 
+	var db = openDatabase('test3', '1.0', 'Test DB', 1000000); 
+	db.transaction(function (tx) { 
+		 tx.executeSql('CREATE TABLE IF NOT EXISTS PLACES (id unique, log)'); 
+		 tx.executeSql('INSERT INTO PLACES (id, log) VALUES (1, "restaurant")'); 
+		 tx.executeSql('INSERT INTO PLACES (id, log) VALUES (2, "cafe")'); 
+		 tx.executeSql('INSERT INTO PLACES (id, log) VALUES (3, "gas_station")'); 
+	})
+	db.transaction(function (tx) { 
+		 tx.executeSql('SELECT * FROM PLACES', [], function (tx, results) { 
+			res = results.rows.item(0).log;
+			caf = results.rows.item(1).log;
+			gas = results.rows.item(2).log;
+		 }, null); 
+	}); 
+function showGasStation() {
+window.location.href="placesearch.html?" + gas;
+}
+function showRestaurant() {
+window.location.href="placesearch.html?" + res;
+}
+function showCafeteria() {
+window.location.href="placesearch.html?" + caf;
+}
+</script>
+</head>
+<body>
+<h2>Closest</h2>
+<div class="buttons">
+<button onclick="showGasStation()">Gas Station</button>
+<button onclick="showRestaurant()">Restaurant</button>
+<button onclick="showCafeteria()">Cafe</button>
+</div>
+</body>
+</html>
+
+
