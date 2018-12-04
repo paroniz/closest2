@@ -10,38 +10,64 @@
 <meta name="description" content="Find services close to you!">
 <title>Closest</title>
 <script type = "text/javascript"> 
-	var db = openDatabase('test3', '1.0', 'Test DB', 1000000); 
-	db.transaction(function (tx) { 
-		 tx.executeSql('CREATE TABLE IF NOT EXISTS PLACES (id unique, log)'); 
-		 tx.executeSql('INSERT INTO PLACES (id, log) VALUES (1, "restaurant")'); 
-		 tx.executeSql('INSERT INTO PLACES (id, log) VALUES (2, "cafe")'); 
-		 tx.executeSql('INSERT INTO PLACES (id, log) VALUES (3, "gas_station")'); 
-	})
-	db.transaction(function (tx) { 
-		 tx.executeSql('SELECT * FROM PLACES', [], function (tx, results) { 
-			res = results.rows.item(0).log;
-			caf = results.rows.item(1).log;
-			gas = results.rows.item(2).log;
-		 }, null); 
-	}); 
 function showGasStation() {
-window.location.href="placesearch.html?" + gas;
+window.location.href="placesearch.html?" + "gas_station";
 }
 function showRestaurant() {
-window.location.href="placesearch.html?" + res;
+window.location.href="placesearch.html?" + "restaurant";
 }
 function showCafeteria() {
-window.location.href="placesearch.html?" + caf;
+window.location.href="placesearch.html?" + "cafe";
+}
+function showLogin() {
+window.location.href="login.html";
+}
+
+function parseURLParams(url) {
+    var queryStart = url.indexOf("?") + 1,
+        queryEnd   = url.indexOf("#") + 1 || url.length + 1,
+        query = url.slice(queryStart, queryEnd - 1),
+        pairs = query.replace(/\+/g, " ").split("&"),
+        parms = {}, i, n, v, nv;
+
+    if (query === url || query === "") return;
+
+    for (i = 0; i < pairs.length; i++) {
+        nv = pairs[i].split("=", 2);
+        n = decodeURIComponent(nv[0]);
+        v = decodeURIComponent(nv[1]);
+
+        if (!parms.hasOwnProperty(n)) parms[n] = [];
+        parms[n].push(nv.length === 2 ? v : null);
+    }
+    return parms;
+}
+var nip = parseURLParams(window.location.href);
+for (var i in nip) 
+{
+   for (var j in nip[i]) 
+     {
+	  nup = nip[i][j];
+     }
 }
 </script>
 </head>
 <body>
 <h2>Closest</h2>
+<p id="welcome"></p>
 <div class="buttons">
 <button onclick="showGasStation()">Gas Station</button>
 <button onclick="showRestaurant()">Restaurant</button>
 <button onclick="showCafeteria()">Cafe</button>
+<button id="login" onclick="showLogin()">Login</button>
 </div>
+<script>
+if (nup.length>0)
+{
+	document.getElementById("welcome").innerHTML = "Welcome "+ nup;
+    document.getElementById("login").innerHTML = "Choose another user";
+}
+</script>
 </body>
 </html>
 

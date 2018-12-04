@@ -1,9 +1,20 @@
 body {
+    font-family: "Arial Black";
     background-color: lightblue;
     text-align: center;
     align-items: center;
 }
+.wrapper{
+    font-family: "Arial Black";
+    background-color: lightblue;
+    text-align: center;
+    align-items: center;
+}
+input {
+    width: 95%;
+}
 button{
+    font-family: "Arial Black";
     background-color: #4CAF50;
     border: none;
     color: white;
@@ -17,8 +28,58 @@ button{
     margin-right: auto;
     width: 95%;
 }
-h2{
+#b2 {
+    font-family: "Arial Black";
+    color: #4CAF50;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    margin: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%; 
+}
+#kirjaudu {
+    font-family: "Arial Black";
+    color: #4CAF50;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    margin: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%; 
+}
+h1, h2{
     font-family: "Arial Black";
     color: #4CAF50;
     text-decoration: underline;
+}
+p, a{
+    font-family: "Arial Black";
+    color: #4CAF50;
+}
+#loginLomake, #etusivu{
+    background-color: lightblue;
+    text-align: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%; 
+    
+}
+.ui-content, .ui-body-a{
+    background-color: lightblue;
+    text-align: center;
+    align-items: center;
 }

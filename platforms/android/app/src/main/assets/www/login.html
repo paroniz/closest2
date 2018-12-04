@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
+ 	<!-- <meta http-equiv="Content-Security-Policy" content="
+			default-src 'self' 'unsafe-inline' ws://10.3.101.217:3000/ http://code.jquery.com https://code.jquery.com  https://ssl.gstatic.com gap: data: blob: filesystem: ;" /> -->
+	<script src="https://code.jquery.com/jquery-2.1.4.js" integrity="sha256-siFczlgw4jULnUICcdm9gjQPZkw/YPDqhQ9+nAOScE4=" crossorigin="anonymous" ></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script src="sha256.min.js"></script>
+	<link rel="stylesheet" href="css/closest.css"/>	
+	<title>Kirjaudu</title>
+</head>
+<body>
+    <div class="wrapper">
+            <h2>Login</h2>
+			<form id="loginLomake">
+			<label for="email">Email:</label>
+            <input type="text" name="email" id="email">
+			<label for="pwd">Password:</label>
+			<input type="text" name="pwd" id="pwd">
+			<button id="kirjaudu">Login</button>
+        </form>
+        <button id="b2" onclick="window.location.href='index.html'">Back</button>
+    </div>
+<script>
+     document.getElementById('loginLomake').onclick = function () {
+		var moi = sha256(document.getElementById('pwd').value).toUpperCase();
+		console.log(moi);
+	}
+
+	$("#kirjaudu").on("tap", function(){
+		if($("#email").val().length>0&&$("#pwd").val().length>0){				
+			$.ajax({
+				type: 'POST',
+				data: $("#loginLomake").serialize(),
+				url: 'http://www.gamelinkz.net/mobiiliohjelmointi/selectLogin2.php',
+				success: function(data){	
+				var tiedot = JSON.parse(data);	
+				if(tiedot.length>0){
+					console.log(tiedot[0].name);
+					sessionStorage.name=tiedot[0].name;		
+                    var mo = tiedot[0].name;					
+					$("#kirjautuneena").html("Kirjautuneena " + mo);	  
+                    document.location.href="index.html?name=" + mo;
+					}else{
+						console.log("Käyttäjää ei tunnisteta.")
+					}						
+					},
+					error: function(){	
+						console.log(2);											
+				    }
+			});				
+		}			
+	});
+</script>
+</body>
+</html>
